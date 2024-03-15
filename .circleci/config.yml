@@ -173,6 +173,7 @@ jobs:
           <<: *basic_docker_build
       - run: |
           echo $SLEEP
+          circleci version
           date
           sleep $SLEEP
           date
@@ -188,6 +189,7 @@ jobs:
           <<: *basic_docker_build
       - run: |
           echo $SLEEP
+          circleci version
           date
           sleep $SLEEP
           date
@@ -204,6 +206,7 @@ jobs:
           <<: *basic_docker_build
       - run: |
           echo $SLEEP
+          circleci version
           date
           sleep $SLEEP
           date
@@ -214,6 +217,7 @@ jobs:
   remote_docker:
     <<: *remote_docker_defaults
     steps:
+      - run: circleci version
       - run: which docker
       - run: docker -v
       - setup_remote_docker
@@ -224,6 +228,7 @@ jobs:
   docker_layer_caching:
     <<: *remote_docker_defaults
     steps:
+      - run: circleci version
       - run: which docker
       - run: docker -v
       - setup_remote_docker:
@@ -236,6 +241,7 @@ jobs:
     machine:
       docker_layer_caching: true
     steps:
+      - run: circleci version
       - run: which docker
       - run: docker -v
       - run:
