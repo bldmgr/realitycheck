@@ -121,6 +121,17 @@ jobs:
             AWS_POLL_DELAY_SECONDS: 60
           command: |
             MONOREPO_CONTENT_SHA="$(./scripts/get_content_sha ubuntu-22.04)"
+            
+            ./scripts/get_last_image "${PROVIDER}" "${MONOREPO_CONTENT_SHA}" "${CIRCLE_JOB}" && {
+                echo "${PROVIDER} image with monorepo_content_sha = ${MONOREPO_CONTENT_SHA} and circle_job_name = ${CIRCLE_JOB} already exists. Skipping build"
+              } || packer build \
+              -machine-readable \
+              --var monorepo_content_sha="${MONOREPO_CONTENT_SHA}" \
+              --var image_family_suffix="${IMAGE_FAMILY_SUFFIX}" \
+              --var ami_region="${AWS_DEFAULT_REGION}" \
+              --var test_results_path="/tmp/results/test-results.xml" \
+              ${SOURCE_IMAGE_VAR} \
+              ubuntu-22.04/packer.json | tee /tmp/artifacts/image-build.log
 
   env-subst-example:
     executor: docker
