@@ -1,0 +1,55 @@
+variables:
+  # metadata for tagging
+  circle_build_url: '{{ env "CIRCLE_BUILD_URL"}}'
+  circle_job_name: '{{ env "CIRCLE_JOB" }}'
+  circle_sha: '{{ env "CIRCLE_SHA1" }}'
+  circle_hostname: '{{ split (env "CIRCLE_BUILD_URL") "/" 2 }}'
+  circle_workflow_id: '{{ env "CIRCLE_WORKFLOW_ID" }}'
+
+builders:
+- type: amazon-ebs
+  access_key: ""
+  secret_key: ""
+  region: "us-east-1"
+  source_ami_filter:
+    filters:
+      virtualization-type: "hvm"
+      root-device-type: "ebs"
+      name: "CiscoHardened-Ubuntu22.04LTS-amd64-hvm-*"
+    owners: ["849570812361"]
+    most_recent: true
+  instance_type: "t3a.medium"
+  ami_name: "ubuntu-2204-cisco-hardened-circleci-jammy-nomad-{{timestamp}}"
+  ssh_username: "circleci"
+  launch_block_device_mappings:
+    - device_name: "/dev/sda1"
+      volume_size: 10
+      volume_type: "gp2"
+      delete_on_termination: true
+  user_data: |
+    #cloud-config
+  tags:
+    circle_build_url: '{{ user "circle_build_url" }}'
+    circle_job_name: '{{ user "circle_job_name" }}'
+    circle_sha: '{{ user "circle_sha" }}'
+    monorepo_content_sha: '{{ user "monorepo_content_sha" }}'
+  run_tags:
+    circle_build_url: '{{ user "circle_build_url" }}'
+  run_volume_tags:
+    circle_build_url: '{{ user "circle_build_url" }}'
+
+provisioners:
+- type: shell
+  inline:
+  - |
+    set -ex
+
+    # disable autoupdates on boot
+    # these can disturb and slow boot behavior
+    # and we aim to finalize image
+    sudo apt-get purge sshguard
+    sudo sed -i -e '/APT::Periodic::Update-Package-Lists/g' /etc/apt/apt.conf.d/10periodic
+    echo 'APT::Periodic::Unattended-Upgrade "0";' | sudo tee -a /etc/apt/apt.conf.d/10periodic
+    sudo rm -rf /tmp/circleci-provisioner
+
+    echo yay it finished
