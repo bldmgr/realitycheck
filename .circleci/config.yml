@@ -91,6 +91,37 @@ workspaces_defaults: &workspaces_defaults
   working_directory: ~/foo/bar
 
 jobs:
+  nomad-packer-build:
+    docker:
+      - image: hashicorp/packer:1.9
+    steps:
+      - checkout
+      - run: apk update
+      - run: apk add --no-progress python3 curl jq py3-pip
+      - run: pip3 install awscli pyyaml
+      - run:
+          name: convert ubuntu-22.04/packer.yaml to ubuntu-22.04/packer.json
+          command: |
+            cat ./ubuntu-22.04/packer.yaml \
+              | python3 -c 'import sys, yaml, json; y=yaml.safe_load(sys.stdin.read()); print(json.dumps(y))' \
+              > ./ubuntu-22.04/packer.json
+      - run:
+          command: |
+                   mkdir -p /tmp/results /tmp/artifacts
+                   cat ./ubuntu-22.04/packer.json | jq 
+                   cp ./ubuntu-22.04/packer.json /tmp/artifacts
+      - run:
+          name: Build images
+          no_output_timeout: 120m
+          environment:
+            # The AMI can take a very long time to be ready. These env
+            # vars make packer wait 2 hours for this to happen before
+            # giving up.
+            AWS_MAX_ATTEMPTS: 120
+            AWS_POLL_DELAY_SECONDS: 60
+          command: |
+            MONOREPO_CONTENT_SHA="$(./scripts/get_content_sha ubuntu-22.04)"
+
   env-subst-example:
     executor: docker
     environment:
@@ -393,3 +424,4 @@ workflows:
   other_jobs:
     jobs:   
       - env-subst-example
+      - nomad-packer-build
