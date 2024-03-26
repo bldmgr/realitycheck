@@ -122,6 +122,38 @@ jobs:
     steps:
      - checkout  
 
+  compute-small-linux:
+    machine:
+      image: default
+    resource_class: compute.small
+    steps:
+     - checkout  
+  compute-medium-linux:
+    machine:
+      image: default
+    resource_class: compute.medium
+    steps:
+     - checkout  
+  compute-large-linux:
+    machine:
+      image: default
+    resource_class: compute.large
+    steps:
+     - checkout  
+  compute-xlarge-linux:
+    machine:
+      image: default
+    resource_class: compute.xlarge
+    steps:
+     - checkout  
+  compute-2xlarge-linux:
+    machine:
+      image: default
+    resource_class: compute.2xlarge
+    steps:
+     - checkout  
+   
+
 
   nomad-packer-build:
     docker:
@@ -473,3 +505,8 @@ workflows:
       - memory-large-linux
       - memory-xlarge-linux
       - memory-2xlarge-linux
+      - compute-small-linux
+      - compute-medium-linux
+      - compute-large-linux
+      - compute-xlarge-linux
+      - compute-2xlarge-linux
