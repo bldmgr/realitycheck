@@ -152,7 +152,75 @@ jobs:
     resource_class: compute.2xlarge
     steps:
      - checkout  
-   
+
+  general-small-linux:
+    machine:
+      image: default
+    resource_class: general.small
+    steps:
+     - checkout  
+  general-medium-linux:
+    machine:
+      image: default
+    resource_class: general.medium
+    steps:
+     - checkout  
+  general-large-linux:
+    machine:
+      image: default
+    resource_class: general.large
+    steps:
+     - checkout  
+  general-xlarge-linux:
+    machine:
+      image: default
+    resource_class: general.xlarge
+    steps:
+     - checkout  
+  general-2xlarge-linux:
+    machine:
+      image: default
+    resource_class: general.2xlarge
+    steps:
+     - checkout  
+     
+  network-small-linux:
+    machine:
+      image: default
+    resource_class: network.small
+    steps:
+     - checkout  
+  network-medium-linux:
+    machine:
+      image: default
+    resource_class: network.medium
+    steps:
+     - checkout  
+  network-large-linux:
+    machine:
+      image: default
+    resource_class: network.large
+    steps:
+     - checkout  
+  network-xlarge-linux:
+    machine:
+      image: default
+    resource_class: network.xlarge
+    steps:
+     - checkout  
+  network-2xlarge-linux:
+    machine:
+      image: default
+    resource_class: network.2xlarge
+    steps:
+     - checkout    
+        
+  accelerated-small-linux:
+    machine:
+      image: default
+    resource_class: accelerated.small
+    steps:
+     - checkout 
 
 
   nomad-packer-build:
@@ -510,3 +578,14 @@ workflows:
       - compute-large-linux
       - compute-xlarge-linux
       - compute-2xlarge-linux
+      - general-small-linux
+      - general-medium-linux
+      - general-large-linux
+      - general-xlarge-linux
+      - general-2xlarge-linux      
+      - accelerated-small-linux
+      - network-small-linux
+      - network-medium-linux
+      - network-large-linux
+      - network-xlarge-linux
+      - network-2xlarge-linux 
