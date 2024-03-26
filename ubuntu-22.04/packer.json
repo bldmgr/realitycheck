@@ -1,0 +1,41 @@
+{
+    "builders": [
+      {
+        "type": "amazon-ebs",
+        "access_key": "",
+        "secret_key": "",
+        "region": "us-east-1",
+        "source_ami_filter": {
+          "filters": {
+            "virtualization-type": "hvm",
+            "root-device-type": "ebs",
+            "name": "CiscoHardened-Ubuntu22.04LTS-amd64-hvm-*"
+          },
+          "owners": [
+            "849570812361"
+          ],
+          "most_recent": true
+        },
+        "instance_type": "t3a.medium",
+        "ami_name": "ubuntu-2204-cisco-hardened-circleci-jammy-nomad-{{timestamp}}",
+        "ssh_username": "ubuntu",
+        "launch_block_device_mappings": [
+          {
+            "device_name": "/dev/sda1",
+            "volume_size": 10,
+            "volume_type": "gp2",
+            "delete_on_termination": true
+          }
+        ],
+        "user_data": "#cloud-config\n"
+      }
+    ],
+    "provisioners": [
+      {
+        "type": "shell",
+        "inline": [
+          "set -ex\n\n# disable autoupdates on boot\n# these can disturb and slow boot behavior\n# and we aim to finalize image\nsudo apt-get purge sshguard\nsudo sed -i -e '/APT::Periodic::Update-Package-Lists/g' /etc/apt/apt.conf.d/10periodic\necho 'APT::Periodic::Unattended-Upgrade \"0\";' | sudo tee -a /etc/apt/apt.conf.d/10periodic\nsudo rm -rf /tmp/circleci-provisioner\n\necho yay it finished\n"
+        ]
+      }
+    ]
+}  

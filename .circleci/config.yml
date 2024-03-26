@@ -91,6 +91,38 @@ workspaces_defaults: &workspaces_defaults
   working_directory: ~/foo/bar
 
 jobs:
+  memory-small-linux:
+    machine:
+      image: default
+    resource_class: memory.small
+    steps:
+     - checkout  
+  memory-medium-linux:
+    machine:
+      image: default
+    resource_class: memory.medium
+    steps:
+     - checkout  
+  memory-large-linux:
+    machine:
+      image: default
+    resource_class: memory.large
+    steps:
+     - checkout  
+  memory-xlarge-linux:
+    machine:
+      image: default
+    resource_class: memory.xlarge
+    steps:
+     - checkout  
+  memory-2xlarge-linux:
+    machine:
+      image: default
+    resource_class: memory.2xlarge
+    steps:
+     - checkout  
+
+
   nomad-packer-build:
     docker:
       - image: hashicorp/packer:1.9
@@ -436,3 +468,8 @@ workflows:
     jobs:   
       - env-subst-example
       - nomad-packer-build
+      - memory-small-linux
+      - memory-medium-linux
+      - memory-large-linux
+      - memory-xlarge-linux
+      - memory-2xlarge-linux
