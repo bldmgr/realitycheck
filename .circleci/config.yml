@@ -93,131 +93,131 @@ workspaces_defaults: &workspaces_defaults
 jobs:
   memory-small-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: memory.small
     steps:
      - checkout  
   memory-medium-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: memory.medium
     steps:
      - checkout  
   memory-large-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: memory.large
     steps:
      - checkout  
   memory-xlarge-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: memory.xlarge
     steps:
      - checkout  
   memory-2xlarge-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: memory.2xlarge
     steps:
      - checkout  
 
   compute-small-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: compute.small
     steps:
      - checkout  
   compute-medium-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: compute.medium
     steps:
      - checkout  
   compute-large-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: compute.large
     steps:
      - checkout  
   compute-xlarge-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: compute.xlarge
     steps:
      - checkout  
   compute-2xlarge-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: compute.2xlarge
     steps:
      - checkout  
 
   general-small-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: general.small
     steps:
      - checkout  
   general-medium-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: general.medium
     steps:
      - checkout  
   general-large-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: general.large
     steps:
      - checkout  
   general-xlarge-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: general.xlarge
     steps:
      - checkout  
   general-2xlarge-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: general.2xlarge
     steps:
      - checkout  
      
   network-small-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: network.small
     steps:
      - checkout  
   network-medium-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: network.medium
     steps:
      - checkout  
   network-large-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: network.large
     steps:
      - checkout  
   network-xlarge-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: network.xlarge
     steps:
      - checkout  
   network-2xlarge-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: network.2xlarge
     steps:
      - checkout    
         
   accelerated-small-linux:
     machine:
-      image: default
+      image: cisco-default
     resource_class: accelerated.small
     steps:
      - checkout 
