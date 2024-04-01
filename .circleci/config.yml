@@ -318,6 +318,7 @@ jobs:
       name: <<parameters.executor_type>>
       resource_class: <<parameters.resource_class>>
     steps:
+      - checkout
 
   check_if_environment_is_aws:
     executor: docker
