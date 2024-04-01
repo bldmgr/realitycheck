@@ -557,7 +557,7 @@ workflows:
       - linux_executor_resource_class:
           matrix:
             parameters:
-              resource_class: [medium, large, xlarge]
+              resource_class: [memory.small, memory.medium, memory.large, memory.xlarge]
               executor_type: [linux] # default, but re-defining for clarity
 
   vm_jobs:
