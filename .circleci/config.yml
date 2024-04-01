@@ -18,6 +18,14 @@ executors:
       image: windows-default
       shell: 'powershell.exe -ExecutionPolicy Bypass'
     resource_class: <<parameters.resource_class>>
+  linux:  # Linux using the default image
+    parameters:
+      resource_class:
+        type: string
+        default: "medium"
+    machine:
+      image: default
+    resource_class: <<parameters.resource_class>>
 
 commands:
   # resource_class verification commands to execute depending on executor_type
@@ -529,6 +537,14 @@ workflows:
               executor_type: [windows]
           requires:
             - check_if_windows_is_enabled
+  
+  linux_resource_class_jobs:
+    jobs:
+      - executor_resource_class:
+          matrix:
+            parameters:
+              resource_class: [small, medium, medium+, large, xlarge]
+              executor_type: [linux] # default, but re-defining for clarity
 
   vm_jobs:
     jobs:
