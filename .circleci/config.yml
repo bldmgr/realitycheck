@@ -190,6 +190,7 @@ jobs:
         default: "default"
     executor:
       name: <<parameters.executor_type>>      
+      image: <<parameters.image_type>>
       resource_class: <<parameters.resource_class>>
     steps:
       - checkout
