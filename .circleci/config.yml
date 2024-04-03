@@ -194,6 +194,10 @@ jobs:
       image_type: <<parameters.image_type>>
     steps:
       - checkout
+      - run:
+          name: Verify Developer Tools Installed
+          command: |
+                   jq --version      
 
   check_if_environment_is_aws:
     executor: docker
