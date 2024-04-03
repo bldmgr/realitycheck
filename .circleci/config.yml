@@ -241,6 +241,22 @@ jobs:
             fi
 
   # vm jobs
+  runner:
+    machine: true
+    resource_class: bldmgr/lab
+    steps:
+      - run:
+          <<: *basic_docker_build
+      - run: |
+          echo $SLEEP
+          circleci version
+          date
+          sleep $SLEEP
+          date
+          echo 'Done sleeping.'
+    environment:
+      SLEEP: 1
+
   machine:
     machine: true
     steps:
@@ -446,6 +462,7 @@ workflows:
       - remote_docker
       - docker_layer_caching
       - machine_dlc
+      - runner
   
   aws_jobs:
     jobs:
