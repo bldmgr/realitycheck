@@ -125,9 +125,8 @@ jobs:
                    docker volume create --name=bootsnap_cache
                    docker volume create --name=vendor_bundle
                    docker compose -f docker-compose.yml pull
-
-
-    
+                   docker compose up -d
+   
   nomad-packer-build:
     docker:
       - image: hashicorp/packer:1.9
