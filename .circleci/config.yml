@@ -126,10 +126,20 @@ jobs:
                    docker volume create --name=vendor_bundle
                    docker compose -f docker-compose.yml pull
                    docker compose up -d
-    
-
-    docker buildx create --name mybuilder --use --bootstrap
-    docker buildx ls
+  default-buildx:
+    machine: 
+      image: cisco-default
+      docker_layer_caching: true
+    resource_class: medium
+    parallelism: 1
+    environment:
+      BROWSER: chrome
+    steps:
+      - checkout
+      - run: 
+          command: |
+                   docker buildx create --name mybuilder --use --bootstrap
+                   docker buildx ls
    
   nomad-packer-build:
     docker:
@@ -525,4 +535,5 @@ workflows:
       - env-subst-example
       - nomad-packer-build
       - default-tests
+      - default-buildx
 
