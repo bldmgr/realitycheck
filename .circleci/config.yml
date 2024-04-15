@@ -140,6 +140,11 @@ jobs:
           command: |
                    docker buildx create --name mybuilder --use --bootstrap
                    docker buildx ls
+      - run: 
+          command: |
+                   docker buildx build --push \
+                   --platform linux/amd64,linux/arm64 \
+                   --tag your_docker_username/multi_arch_sample:buildx-latest .
    
   nomad-packer-build:
     docker:
