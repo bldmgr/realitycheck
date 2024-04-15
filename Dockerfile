@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-  
+
 # specify the base image to  be used for the application
 FROM golang:alpine
   

@@ -2,11 +2,14 @@ version: 2.1
 
 # This is pipeline.parameters.value
 parameters:
-  action:
-    description: Trigger for deployed tests
-    type: enum
-    enum: [pr, test, data]
-    default: pr
+  username:
+    type: string
+    description: "Docker username"
+    default: "${DOCKER_USERNAME}"
+  password:
+    type: string
+    description: "Docker password"
+    default: "${DOCKER_PASSWORD}"
 
 executors:
   docker: # Docker using the Base Convenience Image
@@ -138,13 +141,13 @@ jobs:
       - checkout
       - run: 
           command: |
+                   docker login -u mmontpetit
+                   docker login --username <<pipeline.parameters.username>> --password <<pipeline.parameters.password>>
                    docker buildx create --name mybuilder --use --bootstrap
                    docker buildx ls
-      - run: 
-          command: |
-                   docker buildx build --load \
+                   docker buildx build --push \
                    --platform linux/amd64,linux/arm64 \
-                   --tag your_docker_username/multi_arch_sample:buildx-latest .
+                   --tag <<pipeline.parameters.username>>/multi_arch_sample:buildx-latest .
    
   nomad-packer-build:
     docker:
