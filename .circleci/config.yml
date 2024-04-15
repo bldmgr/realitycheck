@@ -126,6 +126,10 @@ jobs:
                    docker volume create --name=vendor_bundle
                    docker compose -f docker-compose.yml pull
                    docker compose up -d
+    
+
+    docker buildx create --name mybuilder --use --bootstrap
+    docker buildx ls
    
   nomad-packer-build:
     docker:
