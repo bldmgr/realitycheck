@@ -1,5 +1,13 @@
 version: 2.1
 
+# This is pipeline.parameters.value
+parameters:
+  action:
+    description: Trigger for deployed tests
+    type: enum
+    enum: [pr, test, data]
+    default: pr
+
 executors:
   docker: # Docker using the Base Convenience Image
     parameters:
@@ -102,6 +110,24 @@ workspaces_defaults: &workspaces_defaults
   working_directory: ~/foo/bar
 
 jobs:
+  default-tests:
+    machine: 
+      image: cisco-default
+      docker_layer_caching: true
+    resource_class: medium
+    parallelism: 1
+    environment:
+      BROWSER: chrome
+    steps:
+      - checkout
+      - run: 
+          command: |
+                   docker volume create --name=bootsnap_cache
+                   docker volume create --name=vendor_bundle
+                   docker compose -f docker-compose.yml pull
+
+
+    
   nomad-packer-build:
     docker:
       - image: hashicorp/packer:1.9
@@ -495,4 +521,5 @@ workflows:
     jobs:   
       - env-subst-example
       - nomad-packer-build
+      - default-tests
 
