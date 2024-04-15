@@ -141,7 +141,6 @@ jobs:
       - checkout
       - run: 
           command: |
-                   docker login -u mmontpetit
                    docker login --username <<pipeline.parameters.username>> --password <<pipeline.parameters.password>>
                    docker buildx create --name mybuilder --use --bootstrap
                    docker buildx ls
