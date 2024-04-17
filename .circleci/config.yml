@@ -274,9 +274,12 @@ jobs:
           name: Verify Python Installed
           command: |
                    python3 --version
-                   python3.11 --version
-                   python3.12 --version
-                   python2 --version
+                   if [[ $CIRCLE_STAGE = *'cisco'* ]]; then
+                     python3.11 --version
+                     python3.12 --version
+                     python2 --version
+                   fi
+
       - run:
           name: Verify Ruby Installed
           command: |
