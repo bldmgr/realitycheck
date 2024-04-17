@@ -243,7 +243,48 @@ jobs:
       - run:
           name: Verify Developer Tools Installed
           command: |
-                   jq --version      
+                   jq --version
+                   ant -diagnostics
+                   gradle --version
+                   socat -V
+      - run:
+          name: Verify AWS CLI Installed
+          command: |
+                   aws --version 
+      - run:
+          name: Verify Chrome and Driver Installed
+          command: |
+                   google-chrome --version
+                   chromedriver --version
+      - run:
+          name: Verify Docker Installed
+          command: |
+                   docker --version
+                   docker buildx version
+                   docker compose version
+      - run:
+          name: Verify Firefox Installed
+          command: |
+                   firefox --version
+      - run:
+          name: Verify GoLang Installed
+          command: |
+                   go version
+      - run:
+          name: Verify Python Installed
+          command: |
+                   python3 --version
+                   python3.11 --version
+                   python3.12 --version
+                   python2 --version
+      - run:
+          name: Verify Ruby Installed
+          command: |
+                   ruby --version
+      - run:
+          name: Verify Ruby Installed
+          command: |
+                   java -version
 
   check_if_environment_is_aws:
     executor: docker
