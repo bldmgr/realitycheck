@@ -241,6 +241,10 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Verify Firefox Installed
+          command: |
+                   firefox --version
+      - run:
           name: Verify Developer Tools Installed
           command: |
                    jq --version
@@ -262,10 +266,6 @@ jobs:
                    docker --version
                    docker buildx version
                    docker compose version
-      - run:
-          name: Verify Firefox Installed
-          command: |
-                   firefox --version
       - run:
           name: Verify GoLang Installed
           command: |
