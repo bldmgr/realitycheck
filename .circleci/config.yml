@@ -285,9 +285,16 @@ jobs:
           command: |
                    ruby --version
       - run:
-          name: Verify Ruby Installed
+          name: Verify Java Installed
           command: |
                    java -version
+                   if [[ $CIRCLE_STAGE = *'cisco'* ]]; then
+                     sudo update-alternatives --set  "java" "/usr/lib/jvm/java-18-openjdk-amd64/bin/java"
+                     java -version
+                     sudo update-alternatives --set  "java" "/usr/lib/jvm/java-19-openjdk-amd64/bin/java"
+                     java -version                     
+                   fi
+
 
   check_if_environment_is_aws:
     executor: docker
