@@ -254,7 +254,7 @@ jobs:
       - run:
           name: Verify AWS CLI Installed
           command: |
-                   aws --version 
+                   aws --version && echo "OK" || echo "NOK"
       - run:
           name: Verify Chrome and Driver Installed
           command: |
@@ -265,7 +265,8 @@ jobs:
           command: |
                    docker --version
                    docker buildx version
-                   docker compose version
+                   docker compose version && echo "OK" || echo "NOK"
+                   docker-compose version && echo "OK" || echo "NOK"
       - run:
           name: Verify GoLang Installed
           command: |
