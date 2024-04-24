@@ -244,7 +244,6 @@ jobs:
           name: Verify Firefox Installed
           command: |
                    firefox --version && echo "OK" || echo "NOK"
-
       - run:
           name: Verify Developer Tools Installed
           command: |
@@ -259,10 +258,8 @@ jobs:
       - run:
           name: Verify Chrome and Driver Installed
           command: |
-                   if [[ $CIRCLE_STAGE = *'cisco'* ]]; then
-                    google-chrome --version
-                    chromedriver --version
-                   fi
+                   google-chrome --version && echo "OK" || echo "NOK"
+                   chromedriver --version && echo "OK" || echo "NOK"
       - run:
           name: Verify Docker Installed
           command: |
