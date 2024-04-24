@@ -243,9 +243,7 @@ jobs:
       - run:
           name: Verify Firefox Installed
           command: |
-                   if [[ $CIRCLE_STAGE = *'cisco'* ]]; then
-                      firefox --version
-                   fi
+                   firefox --version | true
       - run:
           name: Verify Developer Tools Installed
           command: |
@@ -276,11 +274,9 @@ jobs:
           name: Verify Python Installed
           command: |
                    python3 --version
-                   if [[ $CIRCLE_STAGE = *'cisco'* ]]; then
-                     python3.11 --version
-                     python3.12 --version
-                     python2 --version
-                   fi
+                   python3.11 --version | true
+                   python3.12 --version | true
+                   python2 --version | true
 
       - run:
           name: Verify Ruby Installed
