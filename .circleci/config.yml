@@ -243,7 +243,9 @@ jobs:
       - run:
           name: Verify Firefox Installed
           command: |
-                   firefox --version
+                   if [[ $CIRCLE_STAGE = *'cisco'* ]]; then
+                      firefox --version
+                   fi
       - run:
           name: Verify Developer Tools Installed
           command: |
@@ -558,7 +560,7 @@ workflows:
       - linux_executor_resource_class:
           matrix:
             parameters:
-              resource_class: [memory.small]
+              resource_class: [medium]
               image_type: [default, cisco-default-original, default-original, default-current, cisco-default-current, cisco-build-dev]
               executor_type: [linux] # default, but re-defining for clarity
 
