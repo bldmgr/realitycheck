@@ -290,10 +290,10 @@ jobs:
           command: |
                    java -version
                    if [[ $CIRCLE_STAGE = *'cisco'* ]]; then
-                     sudo update-alternatives --set  "java" "/usr/lib/jvm/java-18-openjdk-amd64/bin/java"
-                     java -version
-                     sudo update-alternatives --set  "java" "/usr/lib/jvm/java-19-openjdk-amd64/bin/java"
-                     java -version                     
+                     sudo update-alternatives --set  "java" "/usr/lib/jvm/java-18-openjdk-amd64/bin/java" && echo "OK" || echo "NOK"
+                     java -version && echo "OK" || echo "NOK"
+                     sudo update-alternatives --set  "java" "/usr/lib/jvm/java-19-openjdk-amd64/bin/java" && echo "OK" || echo "NOK"
+                     java -version && echo "OK" || echo "NOK"                     
                    fi
 
 
