@@ -276,9 +276,9 @@ jobs:
           command: |
                    python3 --version
                    if [[ $CIRCLE_STAGE = *'cisco'* ]]; then
-                     python3.11 --version 
-                     python3.12 --version
-                     python2 --version
+                     python3.11 --version && echo "OK" || echo "NOK"
+                     python3.12 --version && echo "OK" || echo "NOK"
+                     python2 --version && echo "OK" || echo "NOK"
                    fi
 
       - run:
