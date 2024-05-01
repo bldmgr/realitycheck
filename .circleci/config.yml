@@ -115,7 +115,7 @@ workspaces_defaults: &workspaces_defaults
 jobs:
   default-tests:
     machine: 
-      image: cisco-default
+      image: cisco-default-current
       docker_layer_caching: true
     resource_class: medium
     parallelism: 1
@@ -131,7 +131,7 @@ jobs:
                    docker compose up -d
   default-buildx:
     machine: 
-      image: cisco-default
+      image: cisco-default-current
       docker_layer_caching: true
     resource_class: medium
     parallelism: 1
