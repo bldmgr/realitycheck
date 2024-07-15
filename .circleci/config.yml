@@ -569,7 +569,7 @@ jobs:
     steps:
       - checkout
       - run: df -h
-      - run: docker-compose -f compose.yml pull
+      - run: docker-compose -f compose.yaml pull
       - run: df -h
   
 
