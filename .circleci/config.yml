@@ -564,12 +564,10 @@ jobs:
     machine:
       image: default
       docker_layer_caching: true
-    environment: 
-      DOCKER_BULDKIT: '1'
     steps:
       - checkout
       - run: df -h
-      - run: docker-compose -f compose.yaml pull
+      - run: docker compose -f compose.yaml pull
       - run: df -h
   
 
