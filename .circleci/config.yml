@@ -580,7 +580,7 @@ workflows:
       - build-image-no-cache
       - build-no-cache-buildkit
       - build-dlc-buildkit
-      - build-dlc360-buildkit
+      - compose-pull
 
   docker_resource_class_jobs:
     jobs:
