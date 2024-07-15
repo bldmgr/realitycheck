@@ -545,7 +545,7 @@ jobs:
     steps:
       - checkout
       - run: df -h
-      - run: docker build . -t dev-image
+      - run: docker build . -t dev-image 
       - run: df -h
   
   build-dlc-buildkit:
@@ -560,18 +560,18 @@ jobs:
       - run: docker build . -t dev-image --cache-from=dev-image --build-arg BUILDKIT_INLINE_CACHE=1
       - run: df -h
 
-  build-dlc360-buildkit:
+  compose-pull:
     machine:
       image: default
       docker_layer_caching: true
-    resource_class: compute-2xlarge
     environment: 
       DOCKER_BULDKIT: '1'
     steps:
       - checkout
       - run: df -h
-      - run: docker build . -t dev-image --cache-from=dev-image --build-arg BUILDKIT_INLINE_CACHE=1
+      - run: docker compose -f compose.yml pull
       - run: df -h
+  
 
 workflows:
   dlc_testing:
