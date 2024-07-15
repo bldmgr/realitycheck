@@ -525,7 +525,63 @@ jobs:
       - store_test_results:
           path: test-results
 
+  simple-docker:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: echo "hello"
+      #- run: curl http://169.254.169.254/latest/meta-data/ami-id --net=host
+      
+  build-image-no-cache:
+    machine: true
+    steps:
+      - checkout
+      - run: docker build . -t dev-image
+      
+  build-no-cache-buildkit:
+    machine: true
+    environment:
+      DOCKER_BUILDKIT: '1'
+    steps:
+      - checkout
+      - run: df -h
+      - run: docker build . -t dev-image
+      - run: df -h
+  
+  build-dlc-buildkit:
+    machine:
+      image: default
+      docker_layer_caching: true
+    environment: 
+      DOCKER_BULDKIT: '1'
+    steps:
+      - checkout
+      - run: df -h
+      - run: docker build . -t dev-image --cache-from=dev-image --build-arg BUILDKIT_INLINE_CACHE=1
+      - run: df -h
+
+  build-dlc360-buildkit:
+    machine:
+      image: default
+      docker_layer_caching: true
+    resource_class: compute-2xlarge
+    environment: 
+      DOCKER_BULDKIT: '1'
+    steps:
+      - checkout
+      - run: df -h
+      - run: docker build . -t dev-image --cache-from=dev-image --build-arg BUILDKIT_INLINE_CACHE=1
+      - run: df -h
+
 workflows:
+  dlc_testing:
+    jobs:
+      - simple-docker
+      - build-image-no-cache
+      - build-no-cache-buildkit
+      - build-dlc-buildkit
+      - build-dlc360-buildkit
+
   docker_resource_class_jobs:
     jobs:
       - executor_resource_class:
