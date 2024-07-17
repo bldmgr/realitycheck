@@ -571,6 +571,12 @@ jobs:
       - run: buildctl du -v
       - run: df -h
   
+  ssh-test:
+    machine: 
+      image: default
+    steps:
+      - checkout
+      - run: git clone git@github.com:bldmgr/bogus.git
 
 workflows:
   dlc_testing:
@@ -660,4 +666,5 @@ workflows:
       - nomad-packer-build
       - default-tests
       - default-buildx
+      - ssh-test
 
