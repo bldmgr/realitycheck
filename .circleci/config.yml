@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run: |
              docker buildx create --use mycontext1
-             docker buildx build --load --platform=linux/amd64 --file Dockerfile -t docker.engine.sourcefire.com/testing:dlc .
+             
 
 
   build-image-no-cache:
