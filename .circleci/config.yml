@@ -1,6 +1,15 @@
 version: 2.1
 
-jobs:      
+jobs: 
+  build-image-builx-cache:
+    machine: true
+    steps:
+      - checkout
+      - run: |
+             docker buildx create --use mycontext1
+             docker buildx build --load --platform=linux/amd64 --file Dockerfile -t docker.engine.sourcefire.com/testing:dlc .
+
+
   build-image-no-cache:
     machine: true
     steps:
@@ -34,10 +43,11 @@ jobs:
              TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` \
              && curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/ami-id
       - run: docker build . -t bldmgr-image --cache-from=bldmgr-image --build-arg BUILDKIT_INLINE_CACHE=1
-      
+
 workflows:
   main:
     jobs:
+     - build-image-builx-cache
      - dlc-test:           
              matrix:
                parameters:
