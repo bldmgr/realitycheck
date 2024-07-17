@@ -568,7 +568,6 @@ jobs:
       - checkout
       - run: df -h
       - run: docker compose -f compose.yaml pull
-      - run: buildctl du -v
       - run: df -h
   
   ssh-test:
