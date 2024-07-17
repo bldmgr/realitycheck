@@ -41,4 +41,4 @@ workflows:
      - dlc-test:           
              matrix:
                parameters:
-                  image-version: ["ubuntu-2004:2021.07.30", "ubuntu-2004:2023.02.6", "ubuntu-2004:2022.10.10", "ubuntu-2004:2023.03.28", "ubuntu-2204", "default-old"]
+                  image-version: ["ubuntu-2404:2024.05.15","ubuntu-2004:2021.07.30", "ubuntu-2004:2023.02.6", "ubuntu-2004:2022.10.10", "ubuntu-2004:2023.03.28", "ubuntu-2204", "default-old"]
