@@ -65,6 +65,8 @@ workflows:
                   "ubuntu-2204", 
                   "default-old",
                   "cisco-default",
+                  "cisco-defailt-old",
+                  "cisco-testing",
                   "ubuntu-2204:2023.12.12",
                   "ubuntu-2204:2024.01.15",
                   "ubuntu-2204:2023.12.08",
