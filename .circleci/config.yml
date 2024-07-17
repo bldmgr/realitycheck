@@ -577,7 +577,7 @@ jobs:
       - run: git clone git@github.com:bldmgr/bogus.git
       - run: git clone git@github.com:bldmgr/tagbot.git
       - run: git clone git@github.com:apollo-command-and-service-module/apollo.git
-      - run: ls -la
+
 
 workflows:
   dlc_testing:
