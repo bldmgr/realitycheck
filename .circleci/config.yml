@@ -6,7 +6,10 @@ jobs:
     steps:
       - checkout
       - run: |
-             docker buildx create --use mycontext1
+             docker context create docker.engine.sourcefire.com
+             docker buildx create --use docker.engine.sourcefire.com
+
+             docker buildx build --platform=linux/amd64 --file Dockerfile --load -t docker.engine.sourcefire.com/testing:dlc .
              
 
 
