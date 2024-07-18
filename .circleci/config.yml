@@ -52,6 +52,7 @@ jobs:
       DOCKER_LAYER_CACHE: << pipeline.parameters.cache-path >>
     steps:
       - checkout
+      - run: sudo ls -la /var/lib/docker
       - setup-dlc-path
       - restore-dlc-cache
       - run: docker compose -f compose.yaml pull
