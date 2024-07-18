@@ -63,7 +63,6 @@ jobs:
                    sudo chown -R circleci:circleci /tmp
                    ls -la /tmp
                    ls -la << pipeline.parameters.cache-path >>
-                   ls -la /tmp/docker-cache/overlay2/ | grep root
                    
       - save-dlc-cache
 
