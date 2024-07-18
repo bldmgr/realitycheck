@@ -10,14 +10,14 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ .number }}
+            - docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ .BuildNum }}
 
   save-dlc-cache:  
     steps:
       - save_cache:
           paths:
             - << pipeline.parameters.cache-path >>
-          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ .number }}
+          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ .BuildNum }}
 
   setup-dlc-path:
     steps:
