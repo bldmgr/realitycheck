@@ -53,10 +53,13 @@ jobs:
     steps:
       - checkout
       - run: sudo ls -la /var/lib/docker
+      - run: sudo ls -la /tmp/docker-cache
       - setup-dlc-path
       - restore-dlc-cache
       - run: docker compose -f compose.yaml pull
       - save-dlc-cache
+      - run: sudo ls -la /var/lib/docker
+      - run: sudo ls -la /tmp/docker-cache
 
   build-image-builx-cache:
     machine: 
