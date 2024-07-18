@@ -35,6 +35,8 @@ commands:
                 }
               }
               EOF
+              sudo chmod +rx << pipeline.parameters.cache-path >>
+              sudo chown -R circleci:circleci << pipeline.parameters.cache-path >>
               sudo systemctl restart docker 
 
 
