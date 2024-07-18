@@ -23,21 +23,16 @@ commands:
     steps:
       - run:
           name: Prepare Docker Cache Directory
-          command: mkdir -p $DOCKER_LAYER_CACHE
-      - run:
-          name: Configure Docker Daemon
-          command: |
-            sudo mkdir -p /etc/docker
-            echo '{"data-root": "'$DOCKER_LAYER_CACHE'"}' | sudo tee /etc/docker/daemon.json
-            sudo service docker restart
+          command: mkdir -p << pipeline.parameters.cache-path >>
       - run:
           name: Enable buildkit feature and restart docker
           command: |
               sudo tee /etc/docker/daemon.json > /dev/null \<<EOF
               {
+                "data-root": "<< pipeline.parameters.cache-path >>",
                 "features": {
-                    "buildkit": true
-                    }
+                  "buildkit": true
+                }
               }
               EOF
               sudo systemctl restart docker 
