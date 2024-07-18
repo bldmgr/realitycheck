@@ -21,8 +21,8 @@ commands:
 
   teardown-dlc:
     steps:
-      - run: 
-         name:  Prune 
+      - run:
+          name: Prune docker
           command: |
                    docker image prune -f
                    docker container prune -f
