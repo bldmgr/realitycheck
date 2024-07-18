@@ -48,14 +48,14 @@ jobs:
     steps:
       - checkout
       - setup-dlc-path
-      - run: sudo ls -la /var/lib/docker
-      - run: sudo ls -la /tmp/docker-cache
+      - run: sudo du -sh /var/lib/docker
+      - run: sudo du -h --max-depth=1 /tmp/docker-cache
       - run: docker compose -f compose.yaml pull
       #- restore-dlc-cache
       - run: docker compose -f compose.yaml pull
       #- save-dlc-cache
-      - run: sudo ls -la /var/lib/docker
-      - run: sudo ls -la /tmp/docker-cache
+      - run: sudo du -sh /var/lib/docker
+      - run: sudo du -h --max-depth=1 /tmp/docker-cache
 
   build-image-builx-cache:
     machine: 
