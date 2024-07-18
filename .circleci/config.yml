@@ -46,7 +46,7 @@ commands:
                    sudo chown -R circleci:circleci /tmp
                    sudo fstrim -v /var/lib/docker
                    sudo umount /var/lib/docker
-                   
+
   setup-dlc-path:
     steps:
       - run:
@@ -76,7 +76,6 @@ jobs:
   compose-pull:
     machine:
       image: default
-      docker_layer_caching: true
     environment:
       DOCKER_LAYER_CACHE: << pipeline.parameters.cache-path >>
     steps:
