@@ -56,9 +56,9 @@ jobs:
       - run: sudo ls -la /var/lib/docker
       - setup-dlc-path
       - run: sudo ls -la /tmp/docker-cache
-      - restore-dlc-cache
+      #- restore-dlc-cache
       - run: docker compose -f compose.yaml pull
-      - save-dlc-cache
+      #- save-dlc-cache
       - run: sudo ls -la /var/lib/docker
       - run: sudo ls -la /tmp/docker-cache
 
