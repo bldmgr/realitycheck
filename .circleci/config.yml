@@ -56,6 +56,23 @@ jobs:
       - setup-dlc-path
       - run: docker compose -f compose.yaml pull
       - run: 
+          name:  Prune images
+          command: |
+                   docker image prune
+      - run: 
+          name:  Prune containers
+          command: |
+                   docker container prune
+      - run: 
+          name:  Prune volumes
+          command: |
+                   docker volume prune
+      - run: 
+          name:  Prune networks
+          command: |
+                   docker network prune
+      - run:
+          name:  Stopping docker.service
           command: |
                    sudo systemctl stop docker 
                    sudo systemctl stop docker.socket
