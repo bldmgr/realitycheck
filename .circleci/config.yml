@@ -10,14 +10,14 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-11
+            - docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}
 
   save-dlc-cache:  
     steps:
       - save_cache:
           paths:
             - << pipeline.parameters.cache-path >>
-          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-11
+          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}
 
   teardown-dlc:
     steps:
@@ -35,8 +35,6 @@ commands:
                    sudo systemctl stop docker.socket
                    sudo chmod +rx /tmp
                    sudo chown -R circleci:circleci /tmp
-                   sudo fstrim -v /var/lib/docker
-                   sudo umount /var/lib/docker
 
   setup-dlc-path:
     steps:
@@ -46,8 +44,6 @@ commands:
                    mkdir -p << pipeline.parameters.cache-path >>
                    sudo chmod +rx /tmp
                    sudo chown -R circleci:circleci /tmp
-                   ls -la /tmp
-                   ls -la << pipeline.parameters.cache-path >>
       - run:
           name: Enable buildkit feature and restart docker
           command: |
@@ -83,12 +79,15 @@ jobs:
       docker_layer_caching: true
     steps:
       - checkout
+      - restore-dlc-cache
+      - setup-dlc-path
       - run: |
              docker context create docker.engine.sourcefire.com
              docker buildx create --use docker.engine.sourcefire.com
 
              docker buildx build --platform=linux/amd64 --file Dockerfile --load -t docker.engine.sourcefire.com/testing:dlc .
-             
+      - teardown-dlc
+      - save-dlc-cache             
 
 
   build-image-no-cache:
@@ -129,7 +128,7 @@ workflows:
   main:
     jobs:
      - build-image-builx-cache
-     - compose-pull
+     #- compose-pull
      #- dlc-test:           
      #        matrix:
      #          parameters:
