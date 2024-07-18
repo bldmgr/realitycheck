@@ -10,14 +10,14 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-5
+            - docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-6
 
   save-dlc-cache:  
     steps:
       - save_cache:
           paths:
             - << pipeline.parameters.cache-path >>
-          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-5 
+          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-6
 
   setup-dlc-path:
     steps:
@@ -62,7 +62,7 @@ jobs:
                    ls -la /tmp
                    ls -la << pipeline.parameters.cache-path >>
       - save-dlc-cache
-      
+
   build-image-builx-cache:
     machine: 
       image: default
