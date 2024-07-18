@@ -55,6 +55,7 @@ jobs:
       - restore-dlc-cache
       - setup-dlc-path
       - run: docker compose -f compose.yaml pull
+      - run: df -h
       - run: 
           name:  Prune images
           command: |
