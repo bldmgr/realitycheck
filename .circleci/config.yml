@@ -41,7 +41,34 @@ commands:
               }
               EOF
               sudo systemctl restart docker 
-
+   
+   teardown-dlc:
+     steps:
+       - run: 
+           name:  Prune images
+           command: |
+                    docker image prune -f
+       - run: 
+           name:  Prune containers
+           command: |
+                    docker container prune -f
+       - run: 
+           name:  Prune volumes
+           command: |
+                    docker volume prune -f
+       - run: 
+           name:  Prune networks
+           command: |
+                    docker network prune -f
+       - run:
+           name:  Stopping docker.service
+           command: |
+                    sudo systemctl stop docker 
+                    sudo systemctl stop docker.socket
+                    sudo chmod +rx /tmp
+                    sudo chown -R circleci:circleci /tmp
+                    sudo fstrim -v /var/lib/docker
+                    sudo umount /var/lib/docker
 
 jobs: 
   compose-pull:
@@ -55,32 +82,7 @@ jobs:
       - restore-dlc-cache
       - setup-dlc-path
       - run: docker compose -f compose.yaml pull
-      - run: df -h
-      - run: 
-          name:  Prune images
-          command: |
-                   docker image prune -f
-      - run: 
-          name:  Prune containers
-          command: |
-                   docker container prune -f
-      - run: 
-          name:  Prune volumes
-          command: |
-                   docker volume prune -f
-      - run: 
-          name:  Prune networks
-          command: |
-                   docker network prune -f
-      - run:
-          name:  Stopping docker.service
-          command: |
-                   sudo systemctl stop docker 
-                   sudo systemctl stop docker.socket
-                   sudo chmod +rx /tmp
-                   sudo chown -R circleci:circleci /tmp
-                   sudo fstrim -v /var/lib/docker
-                   sudo umount /var/lib/docker
+      - teardown-dlc
       - save-dlc-cache
 
   build-image-builx-cache:
