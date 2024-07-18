@@ -22,20 +22,11 @@ commands:
   teardown-dlc:
     steps:
       - run: 
-         name:  Prune images
+         name:  Prune 
           command: |
                    docker image prune -f
-      - run: 
-          name:  Prune containers
-          command: |
                    docker container prune -f
-      - run: 
-          name:  Prune volumes
-          command: |
                    docker volume prune -f
-      - run: 
-          name:  Prune networks
-          command: |
                    docker network prune -f
       - run:
           name:  Stopping docker.service
