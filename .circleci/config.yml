@@ -48,6 +48,8 @@ jobs:
     machine:
       image: default
       docker_layer_caching: true
+    environment:
+      DOCKER_LAYER_CACHE: << pipeline.parameters.cache-path >>
     steps:
       - checkout
       - setup-dlc-path
