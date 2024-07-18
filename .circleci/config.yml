@@ -1,6 +1,15 @@
 version: 2.1
 
 jobs: 
+  compose-pull:
+    machine:
+      image: default
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - run: docker compose -f compose.yaml pull
+      - run: docker compose -f compose.yaml pull
+
   build-image-builx-cache:
     machine: 
       image: default
@@ -53,6 +62,7 @@ workflows:
   main:
     jobs:
      - build-image-builx-cache
+     - compose-pull
      - dlc-test:           
              matrix:
                parameters:
@@ -68,7 +78,7 @@ workflows:
                   "cisco-defailt-old",
                   "cisco-testing:2024.06.06",
                   "cisco-testing:2024.04.04",
-                  "cisco-testing:2024.05.14,"
+                  "cisco-testing:2024.05.14",
                   "ubuntu-2204:2023.12.12",
                   "ubuntu-2204:2024.01.15",
                   "ubuntu-2204:2023.12.08",
