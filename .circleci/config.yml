@@ -55,12 +55,14 @@ jobs:
       - setup-dlc-path
       - restore-dlc-cache
       - run: docker compose -f compose.yaml pull
-      - save-dlc-cache
       - run: 
           command: |
+                   sudo chmod +rx /tmp
+                   sudo chown -R circleci:circleci /tmp
                    ls -la /tmp
                    ls -la << pipeline.parameters.cache-path >>
-
+      - save-dlc-cache
+      
   build-image-builx-cache:
     machine: 
       image: default
