@@ -27,6 +27,7 @@ commands:
                    mkdir -p << pipeline.parameters.cache-path >>
                    sudo chmod +rx /tmp
                    sudo chown -R circleci:circleci /tmp
+                   ls -la /tmp
                    ls -la << pipeline.parameters.cache-path >>
       - run:
           name: Enable buildkit feature and restart docker
@@ -55,6 +56,10 @@ jobs:
       - restore-dlc-cache
       - run: docker compose -f compose.yaml pull
       - save-dlc-cache
+      - run: 
+          command: |
+                   ls -la /tmp
+                   ls -la << pipeline.parameters.cache-path >>
 
   build-image-builx-cache:
     machine: 
