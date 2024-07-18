@@ -1,5 +1,10 @@
 version: 2.1
 
+parameters:
+  cache-path:
+    type: string
+    default: "/tmp/docker-cache" 
+
 commands:
   restore-dlc-cache:
     steps:
