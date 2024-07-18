@@ -50,10 +50,9 @@ jobs:
       - setup-dlc-path
       - run: sudo du -sh /var/lib/docker
       - run: sudo du -h --max-depth=1 /tmp/docker-cache
+      - restore-dlc-cache
       - run: docker compose -f compose.yaml pull
-      #- restore-dlc-cache
-      - run: docker compose -f compose.yaml pull
-      #- save-dlc-cache
+      - save-dlc-cache
       - run: sudo du -sh /var/lib/docker
       - run: sudo du -h --max-depth=1 /tmp/docker-cache
 
