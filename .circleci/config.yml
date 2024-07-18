@@ -17,7 +17,7 @@ commands:
       - save_cache:
           paths:
             - << pipeline.parameters.cache-path >>
-          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }-1 
+          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-1 
 
   setup-dlc-path:
     steps:
