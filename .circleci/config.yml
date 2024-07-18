@@ -10,20 +10,24 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-2
+            - docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-3
 
   save-dlc-cache:  
     steps:
       - save_cache:
           paths:
             - << pipeline.parameters.cache-path >>
-          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-2 
+          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-3 
 
   setup-dlc-path:
     steps:
       - run:
           name: Prepare Docker Cache Directory
-          command: mkdir -p << pipeline.parameters.cache-path >>
+          command: |
+                   mkdir -p << pipeline.parameters.cache-path >>
+                   sudo chmod +rx << pipeline.parameters.cache-path >>
+                   sudo chown -R circleci:circleci << pipeline.parameters.cache-path >>
+                   ls -la << pipeline.parameters.cache-path >>
       - run:
           name: Enable buildkit feature and restart docker
           command: |
@@ -35,8 +39,6 @@ commands:
                 }
               }
               EOF
-              sudo chmod +rx << pipeline.parameters.cache-path >>
-              sudo chown -R circleci:circleci << pipeline.parameters.cache-path >>
               sudo systemctl restart docker 
 
 
