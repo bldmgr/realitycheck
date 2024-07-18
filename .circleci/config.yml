@@ -32,15 +32,15 @@ commands:
       - run:
           name: Enable buildkit feature and restart docker
           command: |
-              sudo tee /etc/docker/daemon.json > /dev/null \<<EOF
-              {
-                "data-root": "<< pipeline.parameters.cache-path >>",
-                "features": {
-                  "buildkit": true
-                }
-              }
-              EOF
-              sudo systemctl restart docker 
+                   sudo tee /etc/docker/daemon.json > /dev/null \<<EOF
+                   {
+                     "data-root": "<< pipeline.parameters.cache-path >>",
+                     "features": {
+                       "buildkit": true
+                     }
+                   }
+                   EOF
+                   sudo systemctl restart docker 
    
   teardown-dlc:
     steps:
