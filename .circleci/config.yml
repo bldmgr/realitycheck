@@ -10,14 +10,14 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-7
+            - docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-8
 
   save-dlc-cache:  
     steps:
       - save_cache:
           paths:
             - << pipeline.parameters.cache-path >>
-          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-7
+          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-8
 
   setup-dlc-path:
     steps:
@@ -57,11 +57,13 @@ jobs:
       - run: docker compose -f compose.yaml pull
       - run: 
           command: |
+                   sudo systemctl stop docker 
+                   sudo systemctl stop docker.socket
                    sudo chmod +rx /tmp
                    sudo chown -R circleci:circleci /tmp
                    ls -la /tmp
                    ls -la << pipeline.parameters.cache-path >>
-                   sudo systemctl stop docker 
+
       - save-dlc-cache
 
   build-image-builx-cache:
