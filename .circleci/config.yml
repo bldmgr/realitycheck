@@ -19,29 +19,6 @@ commands:
             - << pipeline.parameters.cache-path >>
           key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-11
 
-  setup-dlc-path:
-    steps:
-      - run:
-          name: Prepare Docker Cache Directory
-          command: |
-                   mkdir -p << pipeline.parameters.cache-path >>
-                   sudo chmod +rx /tmp
-                   sudo chown -R circleci:circleci /tmp
-                   ls -la /tmp
-                   ls -la << pipeline.parameters.cache-path >>
-      - run:
-          name: Enable buildkit feature and restart docker
-          command: |
-                   sudo tee /etc/docker/daemon.json > /dev/null \<<EOF
-                   {
-                     "data-root": "<< pipeline.parameters.cache-path >>",
-                     "features": {
-                       "buildkit": true
-                     }
-                   }
-                   EOF
-                   sudo systemctl restart docker 
-   
   teardown-dlc:
     steps:
       - run: 
@@ -69,6 +46,31 @@ commands:
                    sudo chown -R circleci:circleci /tmp
                    sudo fstrim -v /var/lib/docker
                    sudo umount /var/lib/docker
+                   
+  setup-dlc-path:
+    steps:
+      - run:
+          name: Prepare Docker Cache Directory
+          command: |
+                   mkdir -p << pipeline.parameters.cache-path >>
+                   sudo chmod +rx /tmp
+                   sudo chown -R circleci:circleci /tmp
+                   ls -la /tmp
+                   ls -la << pipeline.parameters.cache-path >>
+      - run:
+          name: Enable buildkit feature and restart docker
+          command: |
+                   sudo tee /etc/docker/daemon.json > /dev/null \<<EOF
+                   {
+                     "data-root": "<< pipeline.parameters.cache-path >>",
+                     "features": {
+                       "buildkit": true
+                     }
+                   }
+                   EOF
+                   sudo systemctl restart docker 
+   
+
 
 jobs: 
   compose-pull:
