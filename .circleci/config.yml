@@ -80,6 +80,7 @@ jobs:
                    sudo chmod +rx /tmp
                    sudo chown -R circleci:circleci /tmp
                    sudo fstrim -v /var/lib/docker
+                   umount /var/lib/docker
       - save-dlc-cache
 
   build-image-builx-cache:
