@@ -63,9 +63,6 @@ jobs:
                    sudo chown -R circleci:circleci /tmp
                    ls -la /tmp
                    ls -la << pipeline.parameters.cache-path >>
-      - run: 
-          command: |
-                   fstrim -v /var/lib/docker
       - save-dlc-cache
 
   build-image-builx-cache:
