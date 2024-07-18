@@ -115,40 +115,42 @@ jobs:
       DOCKER_BULDKIT: '1'
     steps:
       - checkout
-      - run: df -h
-      - run: docker version
+      - restore-dlc-cache
+      - setup-dlc-path
       - run: 
           name: Fetch AMI ID from Instance Metadata for reference
           command: |
              TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` \
              && curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/ami-id
       - run: docker build . -t bldmgr-image --cache-from=bldmgr-image --build-arg BUILDKIT_INLINE_CACHE=1
+      - teardown-dlc
+      - save-dlc-cache
 
 workflows:
   main:
     jobs:
      - build-image-builx-cache
-     #- compose-pull
-     #- dlc-test:           
-     #        matrix:
-     #          parameters:
-     #             image-version: [
-     #             "ubuntu-2404:2024.05.15",
-     #             "ubuntu-2004:2021.07.30", 
-     #             "ubuntu-2004:2023.02.6", 
-     #             "ubuntu-2004:2022.10.10", 
-     #             "ubuntu-2004:2023.03.28", 
-     #             "ubuntu-2204", 
-     #             "default-old",
-     #             "cisco-default",
-     #             "cisco-defailt-old",
-     #             "cisco-testing:2024.06.06",
-     #             "cisco-testing:2024.04.04",
-     #             "cisco-testing:2024.05.14",
-     #             "ubuntu-2204:2023.12.12",
-     #             "ubuntu-2204:2024.01.15",
-     #             "ubuntu-2204:2023.12.08",
-     #             "ubuntu-2204:2024.01.17",
-     #             "ubuntu-2204:2023.12.14",
-     #             "ubuntu-2204:2024.04.02"
-     #             ]
+     - compose-pull
+     - dlc-test:           
+             matrix:
+               parameters:
+                  image-version: [
+                  "ubuntu-2404:2024.05.15",
+                  "ubuntu-2004:2021.07.30", 
+                  "ubuntu-2004:2023.02.6", 
+                  "ubuntu-2004:2022.10.10", 
+                  "ubuntu-2004:2023.03.28", 
+                  "ubuntu-2204", 
+                  "default-old",
+                  "cisco-default",
+                  "cisco-defailt-old",
+                  "cisco-testing:2024.06.06",
+                  "cisco-testing:2024.04.04",
+                  "cisco-testing:2024.05.14",
+                  "ubuntu-2204:2023.12.12",
+                  "ubuntu-2204:2024.01.15",
+                  "ubuntu-2204:2023.12.08",
+                  "ubuntu-2204:2024.01.17",
+                  "ubuntu-2204:2023.12.14",
+                  "ubuntu-2204:2024.04.02"
+                  ]
