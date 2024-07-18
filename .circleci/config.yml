@@ -64,8 +64,7 @@ jobs:
                    ls -la /tmp
                    ls -la << pipeline.parameters.cache-path >>
                    ls -la /tmp/docker-cache/overlay2/ | grep root
-                   sudo chown -R circleci:circleci /tmp/docker-cache/overlay2/f141f4342e36acd44916e2d3518e1b5506c31201e430d1dd5bab9cebfac6ea1f/diff/etc/shadow - open /tmp/docker-cache/overlay2/f141f4342e36acd44916e2d3518e1b5506c31201e430d1dd5bab9cebfac6ea1f/diff/etc/shadow
-
+                   
       - save-dlc-cache
 
   build-image-builx-cache:
