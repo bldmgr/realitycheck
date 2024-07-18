@@ -1,5 +1,19 @@
 version: 2.1
 
+commands:
+  restore-dlc-cache:
+    steps:
+      - restore_cache:
+          keys:
+            - docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}
+
+  save-dlc-cache:  
+    steps:
+      - save_cache:
+          paths:
+            - << pipeline.parameters.cache-path >>
+          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }} 
+
 jobs: 
   compose-pull:
     machine:
@@ -7,8 +21,9 @@ jobs:
       docker_layer_caching: true
     steps:
       - checkout
+      - restore-dlc-cache
       - run: docker compose -f compose.yaml pull
-      - run: docker compose -f compose.yaml pull
+      - save-dlc-cache
 
   build-image-builx-cache:
     machine: 
