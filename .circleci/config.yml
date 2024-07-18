@@ -58,19 +58,19 @@ jobs:
       - run: 
           name:  Prune images
           command: |
-                   docker image prune
+                   docker image prune -f
       - run: 
           name:  Prune containers
           command: |
-                   docker container prune
+                   docker container prune -f
       - run: 
           name:  Prune volumes
           command: |
-                   docker volume prune
+                   docker volume prune -f
       - run: 
           name:  Prune networks
           command: |
-                   docker network prune
+                   docker network prune -f
       - run:
           name:  Stopping docker.service
           command: |
