@@ -6,7 +6,7 @@ services:
     volumes:
       - .:/code
   redis:
-    image: redis
+    image: centos
 
   nginx:
     image: nginx
@@ -21,7 +21,7 @@ services:
       - "443:443"
 
   mysql:
-    image: mysql
+    image: ubuntu
     ports:
       - "3306:3306"
     restart: always
