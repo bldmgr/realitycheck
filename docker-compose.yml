@@ -1,50 +1,10 @@
+version: '3.8'
+
 services:
+
   web:
-    build: .
-    ports:
-      - "5000:5000"
-    volumes:
-      - .:/code
-  redis:
-    image: centos
-
-  nginx:
-    image: nginx
-    volumes:
-      - ./docker/nginx/certs:/etc/nginx/certs:ro
-      - ./docker/nginx/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
-    environment:
-      NGINX_READ_TIMEOUT: 180 # Custom
-      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx
-      NGINX_ENVSUBST_TEMPLATE_DIR: /etc/nginx
-    ports:
-      - "443:443"
-
-  mysql:
-    image: ubuntu
-    ports:
-      - "3306:3306"
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: "welcome"
-
-  mongo:
-    image: mongo
-    ports:
-      - "27017:27017"
-    restart: always
-    command: --smallfiles
-
-  memcached:
-    image: memcached 
-    restart: always
-    ports:
-      - "11211"
-
-  rabbitmq:
-    image: rabbitmq
-    restart: always
-    hostname: portal_dev_rabbitmq
-    ports:
-      - "5672"
-      - "15672"
+    build:
+      context: .
+      cache_from:
+        - mjhea0/docker-ci-cache:stage
+    image: mjhea0/docker-ci-cache:stage
