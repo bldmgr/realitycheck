@@ -6,5 +6,5 @@ services:
     build:
       context: .
       cache_from:
-        - mjhea0/docker-ci-cache:stage
+        - centos:8
     image: centos:8

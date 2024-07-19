@@ -572,7 +572,7 @@ jobs:
       - checkout
       - run:
           name: Build Docker images
-          command: docker-compose -f docker-compose.yml pull --build-arg BUILDKIT_INLINE_CACHE=1
+          command: docker-compose -f docker-compose.yml build --build-arg BUILDKIT_INLINE_CACHE=1
 
   
   ssh-test:
