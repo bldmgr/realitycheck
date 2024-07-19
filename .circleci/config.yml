@@ -565,13 +565,15 @@ jobs:
       image: default
       docker_layer_caching: true
     environment: 
-      DOCKER_BUILDKIT: '1'
-      COMPOSE_DOCKER_CLI_BUILD: '1'
+      CACHE_IMAGE: mjhea0/docker-ci-cache
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
-      - run: df -h
-      - run: docker compose -f docker-compose.yml pull --build-arg BUILDKIT_INLINE_CACHE=1
-      - run: df -h
+      - run:
+          name: Build Docker images
+          command: docker-compose -f docker-compose.yml pull --build-arg BUILDKIT_INLINE_CACHE=1
+
   
   ssh-test:
     machine: 
