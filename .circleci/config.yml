@@ -564,6 +564,8 @@ jobs:
     machine:
       image: default
       docker_layer_caching: true
+    environment: 
+      DOCKER_BULDKIT: '1'
     steps:
       - checkout
       - run: df -h
