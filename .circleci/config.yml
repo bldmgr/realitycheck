@@ -567,7 +567,7 @@ jobs:
     steps:
       - checkout
       - run: df -h
-      - run: docker compose -f compose.yaml pull
+      - run: docker compose -f docker-compose.yml pull
       - run: df -h
   
   ssh-test:

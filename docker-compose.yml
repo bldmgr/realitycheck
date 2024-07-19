@@ -1,7 +1,15 @@
-version: "3.4"
 services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/code
+  redis:
+    image: centos
+
   nginx:
-    image: nginx:alpine
+    image: nginx
     volumes:
       - ./docker/nginx/certs:/etc/nginx/certs:ro
       - ./docker/nginx/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
@@ -9,14 +17,11 @@ services:
       NGINX_READ_TIMEOUT: 180 # Custom
       NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx
       NGINX_ENVSUBST_TEMPLATE_DIR: /etc/nginx
-    depends_on:
-      - mysql
-      - mongo
     ports:
       - "443:443"
 
   mysql:
-    image: mysql:5.7
+    image: ubuntu
     ports:
       - "3306:3306"
     restart: always
@@ -30,16 +35,16 @@ services:
     restart: always
     command: --smallfiles
 
-  cassandra:
-    image: cassandra:4.1
+  memcached:
+    image: memcached 
     restart: always
     ports:
-      - "9042:9042"
+      - "11211"
 
-volumes:
-  vendor_bundle:
-    name: vendor_bundle
-    external: true
-  bootsnap_cache:
-    name: bootsnap_cache
-    external: true
+  rabbitmq:
+    image: rabbitmq
+    restart: always
+    hostname: portal_dev_rabbitmq
+    ports:
+      - "5672"
+      - "15672"
