@@ -1,0 +1,211 @@
+version: 2.1
+
+parameters:
+  cache-path:
+    type: string
+    default: "/tmp/docker-cache" 
+
+  s3-bucket:
+    type: string
+    default: "365554800856-cisco-amp-releng-eks-circleci-prod"
+  
+  cache-name:
+    type: string
+    default: "build-cache"
+
+orbs:
+  aws-cli: circleci/aws-cli@3.1.5
+  aws-s3: circleci/aws-s3@4.0.0
+
+commands:
+  run-docker-perm:  
+    steps:
+      - run:
+          name: Run docker as circleci
+          command: |
+              sudo systemctl stop docker
+              sudo chown -R circleci:circleci /lib/systemd/system/docker.service
+              sudo chown -R circleci:circleci /var/run/docker.sock
+              sudo systemctl start docker
+
+  restore-dlc-cache:
+    steps:
+      - restore_cache:
+          keys:
+            - docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}
+
+  save-dlc-cache:  
+    steps:
+      - save_cache:
+          paths:
+            - << pipeline.parameters.cache-path >>
+          key: docker-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}
+
+  teardown-dlc:
+    steps:
+      - run:
+          name: Prune docker
+          command: |
+                   docker image prune -f
+                   docker container prune -f
+                   docker volume prune -f
+                   docker network prune -f
+      - run:
+          name:  Stopping docker.service
+          command: |
+                   sudo systemctl stop docker 
+                   sudo systemctl stop docker.socket
+                   sudo chmod +rx /tmp
+                   sudo chown -R circleci:circleci /tmp
+
+  setup-dlc-path:
+    steps:
+      - run:
+          name: Prepare Docker Cache Directory
+          command: |
+                   mkdir -p << pipeline.parameters.cache-path >>
+                   sudo chmod +rx /tmp
+                   sudo chown -R circleci:circleci /tmp
+      - run:
+          name: Enable buildkit feature and restart docker
+          command: |
+                   sudo tee /etc/docker/daemon.json > /dev/null \<<EOF
+                   {
+                     "data-root": "<< pipeline.parameters.cache-path >>",
+                     "features": {
+                       "buildkit": true
+                     }
+                   }
+                   EOF
+                   sudo systemctl restart docker 
+   
+
+
+jobs: 
+  build-cache:
+    executor: machine-default
+    steps:
+      - checkout
+      - aws-cli/setup:
+          profile-name: cci-aws-user
+          aws-region: us-east-1
+      #- run-docker-perm
+      - run: 
+          name: Build Overlay cache for images below
+          command: docker compose -f compose.yaml pull
+      - run: 
+          name: export tars for images
+          command: |
+              mkdir -p image_tars
+                            
+              images=("mongo" "rabbitmq" "mysql" "memcached" "nginx" "redis")
+              # Loop through the array and load each Docker image
+              for image in "${images[@]}"
+              do
+                  docker save -o "$image".tar "$image"
+                  echo "Exported Docker image from $image"
+              done
+              ls -lah
+              cd image_tars
+      - aws-s3/sync:
+          arguments: |
+             --exclude "*" --include "*.tar" --exclude "*.git" --exclude "*.yml" --exclude "*.circleci"
+          from: /home/circleci/project/image_tars
+          to: s3://<< pipeline.parameters.s3-bucket >>/<< pipeline.parameters.cache-name >>
+          profile_name: cci-aws-user
+
+  compose-pull:
+    machine:
+      image: default
+    environment:
+      DOCKER_LAYER_CACHE: << pipeline.parameters.cache-path >>
+    steps:
+      - checkout
+      - restore-dlc-cache
+      - setup-dlc-path
+      - run: docker compose -f compose.yaml pull
+      - teardown-dlc
+      - save-dlc-cache
+
+  build-image-builx-cache:
+    machine: 
+      image: default
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - restore-dlc-cache
+      - setup-dlc-path
+      - run: |
+             docker context create docker.engine.sourcefire.com
+             docker buildx create --use docker.engine.sourcefire.com
+
+             docker buildx build --platform=linux/amd64 --file Dockerfile --load -t docker.engine.sourcefire.com/testing:dlc .
+      - teardown-dlc
+      - save-dlc-cache             
+
+
+  build-image-no-cache:
+    machine: true
+    steps:
+      - checkout
+      - run: docker build . -t dev-image
+      
+  build-no-cache-buildkit:
+    machine: true
+    environment:
+      DOCKER_BUILDKIT: '1'
+    steps:
+      - checkout
+      - run: docker build . -t dev-image
+  
+  dlc-test:
+    machine:
+      image: << parameters.image-version >>
+    parameters:
+      image-version: 
+        type: string
+    environment: 
+      DOCKER_BULDKIT: '1'
+    steps:
+      - checkout
+      - restore-dlc-cache
+      - setup-dlc-path
+      - run: 
+          name: Fetch AMI ID from Instance Metadata for reference
+          command: |
+             TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` \
+             && curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/ami-id
+      - run: docker build . -t bldmgr-image --cache-from=bldmgr-image --build-arg BUILDKIT_INLINE_CACHE=1
+      - teardown-dlc
+      - save-dlc-cache
+
+workflows:
+  main:
+    jobs:
+      - build-cache 
+          requires:
+  #   - build-image-builx-cache
+  #   - compose-pull
+  #   - dlc-test:           
+  #           matrix:
+  #             parameters:
+  #                image-version: [
+  #                "ubuntu-2404:2024.05.15",
+  #                "ubuntu-2004:2021.07.30", 
+  #                "ubuntu-2004:2023.02.6", 
+  #                "ubuntu-2004:2022.10.10", 
+  #                "ubuntu-2004:2023.03.28", 
+  #                "ubuntu-2204", 
+  #                "default-old",
+  #                "cisco-default",
+  #                "cisco-defailt-old",
+  #                "cisco-testing:2024.06.06",
+  #                "cisco-testing:2024.04.04",
+  #                "cisco-testing:2024.05.14",
+  #                "ubuntu-2204:2023.12.12",
+  #                "ubuntu-2204:2024.01.15",
+  #                "ubuntu-2204:2023.12.08",
+  #                "ubuntu-2204:2024.01.17",
+  #                "ubuntu-2204:2023.12.14",
+  #                "ubuntu-2204:2024.04.02"
+  #                ]
