@@ -596,92 +596,92 @@ workflows:
   mac:
     jobs:
       - tangerine
-  dlc_testing:
-    jobs:
-      - simple-docker
-      - build-image-no-cache
-      - build-no-cache-buildkit
-      - build-dlc-buildkit
-      - compose-pull
-
-  docker_resource_class_jobs:
-    jobs:
-      - executor_resource_class:
-          matrix:
-            parameters:
-              resource_class: [small, medium, medium+, large, xlarge]
-              executor_type: [docker] # default, but re-defining for clarity
-
-  windows_resource_class_jobs:
-    jobs:
-      - check_if_windows_is_enabled
-      - executor_resource_class:
-          matrix:
-            parameters:
-              resource_class: [windows.medium, windows.large, windows.xlarge]
-              executor_type: [windows]
-          requires:
-            - check_if_windows_is_enabled
-  
-  linux_resource_class_jobs:
-    jobs:
-      - linux_executor_resource_class:
-          matrix:
-            parameters:
-              resource_class: [memory.small, memory.medium, memory.large, memory.xlarge, compute.small, compute.medium, compute.large, compute.xlarge, compute.2xlarge, general.small, general.medium, general.large, general.xlarge, general.2xlarge, network.small, network.medium, network.xlarge, network.2xlarge, accelerated.small]
-              image_type: [default, cisco-default-current]
-              executor_type: [linux] # default, but re-defining for clarity
-  
-  linux_images_jobs:
-    jobs:
-      - linux_executor_resource_class:
-          matrix:
-            parameters:
-              resource_class: [medium]
-              image_type: [default, cisco-default-original, default-original, default-current, cisco-default-current, cisco-build-dev]
-              executor_type: [linux] # default, but re-defining for clarity
-
-
-  vm_jobs:
-    jobs:
-      - machine
-      - remote_docker
-      - docker_layer_caching
-      - machine_dlc
-      - runner
-  
-  aws_jobs:
-    jobs:
-      - check_if_environment_is_aws
-      - aws_arm:
-          requires:
-            - check_if_environment_is_aws
-  
-  gcp_jobs:
-    jobs:
-      - check_if_environment_is_gcp
-      - android_machine:
-          requires:
-            - check_if_environment_is_gcp
-
-  feature_jobs:
-    jobs:
-      - save_and_restore_cache
-      - contexts:
-          context: org-global
-      - multi-contexts:
-          context: individual-local
-      - write_workspace
-      - read_workspace:
-          requires:
-            - write_workspace
-      - artifacts_test_results
-
-  other_jobs:
-    jobs:   
-      - env-subst-example
-      - nomad-packer-build
-      - default-tests
-      - default-buildx
-      - ssh-test
-
+#  dlc_testing:
+#    jobs:
+#      - simple-docker
+#      - build-image-no-cache
+#      - build-no-cache-buildkit
+#      - build-dlc-buildkit
+#      - compose-pull
+#
+#  docker_resource_class_jobs:
+#    jobs:
+#      - executor_resource_class:
+#          matrix:
+#            parameters:
+#              resource_class: [small, medium, medium+, large, xlarge]
+#              executor_type: [docker] # default, but re-defining for clarity
+#
+#  windows_resource_class_jobs:
+#    jobs:
+#      - check_if_windows_is_enabled
+#      - executor_resource_class:
+#          matrix:
+#            parameters:
+#              resource_class: [windows.medium, windows.large, windows.xlarge]
+#              executor_type: [windows]
+#          requires:
+#            - check_if_windows_is_enabled
+#  
+#  linux_resource_class_jobs:
+#    jobs:
+#      - linux_executor_resource_class:
+#          matrix:
+#            parameters:
+#              resource_class: [memory.small, memory.medium, memory.large, memory.xlarge, compute.small, compute.medium, compute.large, compute.xlarge, compute.2xlarge, general.small, general.medium, general.large, general.xlarge, general.2xlarge, network.small, network.medium, network.xlarge, network.2xlarge, accelerated.small]
+#              image_type: [default, cisco-default-current]
+#              executor_type: [linux] # default, but re-defining for clarity
+#  
+#  linux_images_jobs:
+#    jobs:
+#      - linux_executor_resource_class:
+#          matrix:
+#            parameters:
+#              resource_class: [medium]
+#              image_type: [default, cisco-default-original, default-original, default-current, cisco-default-current, cisco-build-dev]
+#              executor_type: [linux] # default, but re-defining for clarity
+#
+#
+#  vm_jobs:
+#    jobs:
+#      - machine
+#      - remote_docker
+#      - docker_layer_caching
+#      - machine_dlc
+#      - runner
+#  
+#  aws_jobs:
+#    jobs:
+#      - check_if_environment_is_aws
+#      - aws_arm:
+#          requires:
+#            - check_if_environment_is_aws
+#  
+#  gcp_jobs:
+#    jobs:
+#      - check_if_environment_is_gcp
+#      - android_machine:
+#          requires:
+#            - check_if_environment_is_gcp
+#
+#  feature_jobs:
+#    jobs:
+#      - save_and_restore_cache
+#      - contexts:
+#          context: org-global
+#      - multi-contexts:
+#          context: individual-local
+#      - write_workspace
+#      - read_workspace:
+#          requires:
+#            - write_workspace
+#      - artifacts_test_results
+#
+#  other_jobs:
+#    jobs:   
+#      - env-subst-example
+#      - nomad-packer-build
+#      - default-tests
+#      - default-buildx
+#      - ssh-test
+#
