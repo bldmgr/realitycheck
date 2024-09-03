@@ -574,6 +574,11 @@ jobs:
           name: Build Docker images
           command: docker-compose -f docker-compose.yml build --build-arg BUILDKIT_INLINE_CACHE=1
 
+  tangerine:
+    machine: true
+    resource_class: mmontpetit/tangerine
+    steps:
+      - run: ls -la
   
   ssh-test:
     machine: 
@@ -588,6 +593,9 @@ jobs:
       - run: ls -la
 
 workflows:
+  mac:
+    jobs:
+      - tangerine
   dlc_testing:
     jobs:
       - simple-docker
