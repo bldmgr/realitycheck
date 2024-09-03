@@ -576,7 +576,7 @@ jobs:
 
   tangerine:
     machine: true
-    resource_class: mmontpetit/tangerine
+    resource_class: bldmgr/personal
     steps:
       - run: ls -la
   
