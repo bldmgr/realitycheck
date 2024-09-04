@@ -574,12 +574,35 @@ jobs:
           name: Build Docker images
           command: docker-compose -f docker-compose.yml build --build-arg BUILDKIT_INLINE_CACHE=1
 
-  tangerine:
+  mac-test-01:
     machine: true
     resource_class: bldmgr/personal
     steps:
+      - checkout
       - run: ls -la
-  
+
+  mac-test-02:
+    machine: true
+    resource_class: bldmgr/personal
+    steps:
+      - checkout
+      - run: ls -la
+
+  mac-test-03:
+    machine: true
+    resource_class: bldmgr/personal
+    steps:
+      - checkout
+      - run: ls -la
+
+  mac-test-04:
+    machine: true
+    resource_class: bldmgr/personal
+    steps:
+      - checkout
+      - run: ls -la
+
+
   ssh-test:
     machine: 
       image: default
@@ -595,7 +618,10 @@ jobs:
 workflows:
   mac:
     jobs:
-      - tangerine
+      - mac-test-01
+      - mac-test-02
+      - mac-test-03
+      - mac-test-04
 #  dlc_testing:
 #    jobs:
 #      - simple-docker
