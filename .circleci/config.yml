@@ -618,10 +618,10 @@ jobs:
 workflows:
   mac:
     jobs:
-#      - mac-test-01
-#      - mac-test-02
-#      - mac-test-03
-#      - mac-test-04
+      - mac-test-01
+      - mac-test-02
+      - mac-test-03
+      - mac-test-04
 #  dlc_testing:
 #    jobs:
 #      - simple-docker
