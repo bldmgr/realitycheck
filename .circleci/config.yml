@@ -24,9 +24,9 @@ executors:
     parameters:
       resource_class:
         type: string
-        default: "medium"
+        default: "medium"code 
     machine:
-      image: windows-test
+      image: windows-vs22
       shell: 'powershell.exe -ExecutionPolicy Bypass'
     resource_class: <<parameters.resource_class>>
   linux:  # Linux using the default image
