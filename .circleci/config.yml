@@ -280,7 +280,10 @@ jobs:
                      python3.12 --version && echo "OK" || echo "NOK"
                      python2 --version && echo "OK" || echo "NOK"
                    fi
-
+      - run:
+          name: Verify Cmake Installed
+          command: |
+                   cmake --version
       - run:
           name: Verify Ruby Installed
           command: |
