@@ -658,14 +658,14 @@ workflows:
 #              image_type: [default, cisco-default-current]
 #              executor_type: [linux] # default, but re-defining for clarity
 #  
-#  linux_images_jobs:
-#    jobs:
-#      - linux_executor_resource_class:
-#          matrix:
-#            parameters:
-#              resource_class: [medium]
-#              image_type: [default, cisco-default-original, default-original, default-current, cisco-default-current, cisco-build-dev]
-#              executor_type: [linux] # default, but re-defining for clarity
+  linux_images_jobs:
+    jobs:
+      - linux_executor_resource_class:
+          matrix:
+            parameters:
+              resource_class: [medium]
+              image_type: [default, cisco-default-original, default-original, default-current, cisco-default-current, cisco-build-dev, ubuntu-latest]
+              executor_type: [linux] # default, but re-defining for clarity
 #
 #
 #  vm_jobs:
