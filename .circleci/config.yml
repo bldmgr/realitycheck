@@ -41,6 +41,18 @@ executors:
       image: <<parameters.image_type>>
     resource_class: <<parameters.resource_class>>
 
+  almalinux:  # Linux using the default image
+    parameters:
+      resource_class:
+        type: string
+        default: "medium"
+      image_type:
+        type: string
+        default: "default"
+    machine:
+      image: <<parameters.image_type>>
+    resource_class: <<parameters.resource_class>>
+
 commands:
   # resource_class verification commands to execute depending on executor_type
   verify_resource_class:
@@ -652,6 +664,15 @@ workflows:
           requires:
             - check_if_windows_is_enabled
   
+  almalinux_resource_class_jobs:
+    jobs:
+      - linux_executor_resource_class:
+          matrix:
+            parameters:
+              resource_class: [memory.small, memory.medium, memory.large, memory.xlarge, compute.small, compute.medium, compute.large, compute.xlarge, compute.2xlarge, general.small, general.medium, general.large, general.xlarge, general.2xlarge, network.small, network.medium, network.xlarge, network.2xlarge, accelerated.small]
+              image_type: [alma9]
+              executor_type: [almalinux] # default, but re-defining for clarity
+
   linux_resource_class_jobs:
     jobs:
       - linux_executor_resource_class:
