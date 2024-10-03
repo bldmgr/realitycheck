@@ -669,7 +669,7 @@ workflows:
       - linux_executor_resource_class:
           matrix:
             parameters:
-              resource_class: [memory.small, memory.medium, memory.large, memory.xlarge, compute.small, compute.medium, compute.large, compute.xlarge, compute.2xlarge, general.small, general.medium, general.large, general.xlarge, general.2xlarge, network.small, network.medium, network.xlarge, network.2xlarge, accelerated.small]
+              resource_class: [general.small, general.medium, general.large]
               image_type: [alma9]
               executor_type: [almalinux] # default, but re-defining for clarity
 
