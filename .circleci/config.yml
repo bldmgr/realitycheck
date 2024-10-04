@@ -20,6 +20,9 @@ executors:
     docker:
       - image: 'cimg/base:2021.02-20.04'
     resource_class: <<parameters.resource_class>>
+  winrunner:
+    machine: true
+    resource_class: bldmgr/windows
   windows:  # Windows using the default windows image
     parameters:
       resource_class:
@@ -653,16 +656,16 @@ workflows:
 #              resource_class: [small, medium, medium+, large, xlarge]
 #              executor_type: [docker] # default, but re-defining for clarity
 #
-#  windows_resource_class_jobs:
-#    jobs:
-#      - check_if_windows_is_enabled
-#      - executor_resource_class:
-#          matrix:
-#            parameters:
-#              resource_class: [windows.medium, windows.large, windows.xlarge]
-#              executor_type: [windows]
-#          requires:
-#            - check_if_windows_is_enabled
+  windows_resource_class_jobs:
+    jobs:
+      - check_if_windows_is_enabled
+      - executor_resource_class:
+          matrix:
+            parameters:
+              resource_class: [windows.medium, windows.large, windows.xlarge]
+              executor_type: [winrunners]
+          requires:
+            - check_if_windows_is_enabled
   
   almalinux_resource_class_jobs:
     jobs:
