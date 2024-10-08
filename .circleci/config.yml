@@ -104,9 +104,9 @@ commands:
                     -Headers @{ "Circle-Token" = "$env:CIRCLE_TOKEN" }
                   $job.executor.resource_class | Select-String -Pattern "<<parameters.resource_class>>"
             - run: pwd
-            - run: $env:Path
+            - run: $Env:PATH -split ";"
             - run: $env:HOST_IP
-            
+
 remote_docker_defaults: &remote_docker_defaults
   docker: [{image: 'docker:17.06-git'}]
 
@@ -599,7 +599,7 @@ jobs:
     steps:
       - checkout
       - run: pwd
-      - run: $env:Path
+      - run: $Env:PATH -split ";"
       - run: $env:HOST_IP
       - run: choco install -y winappdriver
       - run: 
