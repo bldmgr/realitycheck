@@ -103,7 +103,10 @@ commands:
                   $job = Invoke-RestMethod -URI "$env:CIRCLE_HOSTNAME/api/v2/project/gh/$env:CIRCLE_PROJECT_USERNAME/$env:CIRCLE_PROJECT_REPONAME/job/$env:CIRCLE_BUILD_NUM" `
                     -Headers @{ "Circle-Token" = "$env:CIRCLE_TOKEN" }
                   $job.executor.resource_class | Select-String -Pattern "<<parameters.resource_class>>"
-
+            - run: pwd
+            - run: $env:Path
+            - run: $env:HOST_IP
+            
 remote_docker_defaults: &remote_docker_defaults
   docker: [{image: 'docker:17.06-git'}]
 
@@ -352,9 +355,6 @@ jobs:
               echo "Windows executor environment flag is not set to \"true\". Cancelling downstream workflow."
               curl -X POST "${CIRCLE_HOSTNAME%/}/api/v2/workflow/$CIRCLE_WORKFLOW_ID/cancel?circle-token=$CIRCLE_TOKEN"
             fi
-      - run: pwd
-      - run: $env:Path
-      - run: $env:HOST_IP
 
   # vm jobs
   runner:
@@ -591,7 +591,7 @@ jobs:
       - run:
           name: Build Docker images
           command: docker-compose -f docker-compose.yml build --build-arg BUILDKIT_INLINE_CACHE=1
-  
+
   win-test-01:
     machine: true
     resource_class: bldmgr/windows
