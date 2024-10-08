@@ -689,6 +689,7 @@ workflows:
   windows:
     jobs:
       - win-test-01
+      - win-test-02
 
 #  mac:
 #    jobs:
