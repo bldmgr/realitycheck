@@ -595,6 +595,7 @@ jobs:
     shell: powershell.exe
     steps:
       - checkout
+      - run: pwd
       - run: choco install -y winappdriver
       - run: 
           name: Run winappdriver in background
