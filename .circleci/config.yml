@@ -352,6 +352,9 @@ jobs:
               echo "Windows executor environment flag is not set to \"true\". Cancelling downstream workflow."
               curl -X POST "${CIRCLE_HOSTNAME%/}/api/v2/workflow/$CIRCLE_WORKFLOW_ID/cancel?circle-token=$CIRCLE_TOKEN"
             fi
+      - run: pwd
+      - run: $env:Path
+      - run: $env:HOST_IP
 
   # vm jobs
   runner:
