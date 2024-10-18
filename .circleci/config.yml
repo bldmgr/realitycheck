@@ -622,6 +622,9 @@ jobs:
     shell: powershell.exe
     steps:
       - checkout
+      - run: pwd
+      - run: $Env:PATH -split ";"
+      - run: $env:HOST_IP
       - run:
           name: "List .Net runtimes"
           command: dotnet --list-runtimes
