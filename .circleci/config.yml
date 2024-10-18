@@ -626,22 +626,16 @@ jobs:
           name: "List .Net runtimes"
           command: dotnet --list-runtimes
       - run: |
-          mkdir -p <<pipeline.parameters.OUTPUT_PATH>>
-          mkdir -p ~/project/staging/Debug
-          mkdir -p ~/project/staging/Release
-          echo "1234" > ~/project/staging/Release/file1.txt
-          echo "1234" > ~/project/staging/Debug/file2.txt
-          echo "1234" > ~/project/staging/file3.txt
-      - cpp-archive/create-cpp-archive:
-          INPUT_FULL_PATH: <<pipeline.parameters.STAGING_PATH>>
-          OUTPUT_FULL_PATH: <<pipeline.parameters.OUTPUT_PATH>>
-          PROJECT_NAME: << pipeline.parameters.PROJECT_NAME >>
-          PROJECT_VERSION: << pipeline.parameters.PROJECT_VERSION >>
-          COMPILER_NAME: msvc
-          PLATFORM: x64
-          CRT_RUNTIME: MD
-      - store_artifacts:
-          path: <<pipeline.parameters.OUTPUT_PATH>>
+             mkdir -p ./install
+             mkdir -p ./staging/Debug
+             mkdir -p ./staging/Release
+             echo "1234" > ./staging/Release/file1.txt
+             echo "1234" > ./staging/Debug/file2.txt
+             echo "1234" > ./staging/file3.txt
+      - run: | 
+             set -x
+             GITSHA_SHORT=$(echo $CIRCLE_SHA1 | cut -c -7)
+             tar -czf .tar.gz -C ./staging
 
 
   mac-test-01:
