@@ -636,9 +636,8 @@ jobs:
              echo "1234" > ./staging/Debug/file2.txt
              echo "1234" > ./staging/file3.txt
       - run: | 
-             set -x
              GITSHA_SHORT=$(echo $CIRCLE_SHA1 | cut -c -7)
-             tar -czf .tar.gz -C ./staging
+             tar -czf ${GITSHA_SHORT}.tar.gz -C ./staging
 
 
   mac-test-01:
