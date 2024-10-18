@@ -10,6 +10,21 @@ parameters:
     type: string
     description: "Docker password"
     default: "${DOCKER_PASSWORD}"
+  STAGING_PATH:
+    type: string
+    default: ~/project/staging
+  BASE_PATH:
+    type: string
+    default: ~/project
+  OUTPUT_PATH:
+    type: string
+    default: ~/project/install
+  PROJECT_NAME:
+    type: string
+    default: cppzippackagetest
+  PROJECT_VERSION:
+    type: string
+    default: "1.0.0"
 
 executors:
   docker: # Docker using the Base Convenience Image
@@ -610,6 +625,23 @@ jobs:
       - run:
           name: "List .Net runtimes"
           command: dotnet --list-runtimes
+      - run: |
+          mkdir -p <<pipeline.parameters.OUTPUT_PATH>>
+          mkdir -p ~/project/staging/Debug
+          mkdir -p ~/project/staging/Release
+          echo "1234" > ~/project/staging/Release/file1.txt
+          echo "1234" > ~/project/staging/Debug/file2.txt
+          echo "1234" > ~/project/staging/file3.txt
+      - cpp-archive/create-cpp-archive:
+          INPUT_FULL_PATH: <<pipeline.parameters.STAGING_PATH>>
+          OUTPUT_FULL_PATH: <<pipeline.parameters.OUTPUT_PATH>>
+          PROJECT_NAME: << pipeline.parameters.PROJECT_NAME >>
+          PROJECT_VERSION: << pipeline.parameters.PROJECT_VERSION >>
+          COMPILER_NAME: msvc
+          PLATFORM: x64
+          CRT_RUNTIME: MD
+      - store_artifacts:
+          path: <<pipeline.parameters.OUTPUT_PATH>>
 
 
   mac-test-01:
