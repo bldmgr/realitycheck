@@ -41,7 +41,7 @@ executors:
         type: string
         default: "medium"
     machine:
-      image: windows-default
+      image: windows-vs22
       shell: 'powershell.exe -ExecutionPolicy Bypass'
     resource_class: <<parameters.resource_class>>
   linux:  # Linux using the default image
@@ -709,16 +709,16 @@ workflows:
 #              resource_class: [small, medium, medium+, large, xlarge]
 #              executor_type: [docker] # default, but re-defining for clarity
 #
-#  windows_resource_class_jobs:
-#    jobs:
-#      - check_if_windows_is_enabled
-#      - executor_resource_class:
-#          matrix:
-#            parameters:
-#              resource_class: [windows.medium, windows.large, windows.xlarge]
-#              executor_type: [windows]
-#          requires:
-#            - check_if_windows_is_enabled
+  windows_resource_class_jobs:
+    jobs:
+      - check_if_windows_is_enabled
+      - executor_resource_class:
+          matrix:
+            parameters:
+              resource_class: [windows.medium, windows.large, windows.xlarge]
+              executor_type: [windows]
+          requires:
+            - check_if_windows_is_enabled
   
 #  almalinux_resource_class_jobs:
 #    jobs:
