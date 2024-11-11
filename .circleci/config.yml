@@ -41,7 +41,7 @@ executors:
         type: string
         default: "medium"
     machine:
-      image: windows-2019
+      image: windows-2022
       shell: 'powershell.exe -ExecutionPolicy Bypass'
     resource_class: <<parameters.resource_class>>
   linux:  # Linux using the default image
