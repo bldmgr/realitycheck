@@ -44,7 +44,7 @@ executors:
       image: windows-default
       shell: 'powershell.exe -ExecutionPolicy Bypass'
     resource_class: <<parameters.resource_class>>
-  windows22:  # Windows using the default windows image
+  windows22:  
     parameters:
       resource_class:
         type: string
@@ -53,7 +53,7 @@ executors:
       image: windows-2022
       shell: 'powershell.exe -ExecutionPolicy Bypass'
     resource_class: <<parameters.resource_class>>
-  windows19:  # Windows using the default windows image
+  windows19:  
     parameters:
       resource_class:
         type: string
@@ -734,30 +734,10 @@ workflows:
           matrix:
             parameters:
               resource_class: [windows.medium, windows.large, windows.xlarge]
-              executor_type: [windows]
-          requires:
-            - check_if_windows_is_enabled
-  windows_2022_resource_class:
-    jobs:
-      - check_if_windows_is_enabled
-      - executor_resource_class:
-          matrix:
-            parameters:
-              resource_class: [windows.medium, windows.large, windows.xlarge]
-              executor_type: [windows22]
-          requires:
-            - check_if_windows_is_enabled
-  windows_2019_resource_class:
-    jobs:
-      - check_if_windows_is_enabled
-      - executor_resource_class:
-          matrix:
-            parameters:
-              resource_class: [windows.medium, windows.large, windows.xlarge]
               executor_type: [windows19]
           requires:
-            - check_if_windows_is_enabled  
-  
+            - check_if_windows_is_enabled
+ 
 #  almalinux_resource_class_jobs:
 #    jobs:
 #      - linux_executor_resource_class:
