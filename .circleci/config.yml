@@ -41,7 +41,25 @@ executors:
         type: string
         default: "medium"
     machine:
+      image: windows-default
+      shell: 'powershell.exe -ExecutionPolicy Bypass'
+    resource_class: <<parameters.resource_class>>
+  windows22:  # Windows using the default windows image
+    parameters:
+      resource_class:
+        type: string
+        default: "medium"
+    machine:
       image: windows-2022
+      shell: 'powershell.exe -ExecutionPolicy Bypass'
+    resource_class: <<parameters.resource_class>>
+  windows19:  # Windows using the default windows image
+    parameters:
+      resource_class:
+        type: string
+        default: "medium"
+    machine:
+      image: windows-2019
       shell: 'powershell.exe -ExecutionPolicy Bypass'
     resource_class: <<parameters.resource_class>>
   linux:  # Linux using the default image
@@ -682,10 +700,10 @@ jobs:
       - run: ls -la
 
 workflows:
-  windows:
-    jobs:
-      - win-test-01
-      - win-test-02
+#  windows:
+#    jobs:
+#      - win-test-01
+#      - win-test-02
 
 #  mac:
 #    jobs:
@@ -709,7 +727,7 @@ workflows:
 #              resource_class: [small, medium, medium+, large, xlarge]
 #              executor_type: [docker] # default, but re-defining for clarity
 #
-  windows_resource_class_jobs:
+  windows_default_resource_class:
     jobs:
       - check_if_windows_is_enabled
       - executor_resource_class:
@@ -719,6 +737,26 @@ workflows:
               executor_type: [windows]
           requires:
             - check_if_windows_is_enabled
+  windows_2022_resource_class:
+    jobs:
+      - check_if_windows_is_enabled
+      - executor_resource_class:
+          matrix:
+            parameters:
+              resource_class: [windows.medium, windows.large, windows.xlarge]
+              executor_type: [windows22]
+          requires:
+            - check_if_windows_is_enabled
+  windows_2019_resource_class:
+    jobs:
+      - check_if_windows_is_enabled
+      - executor_resource_class:
+          matrix:
+            parameters:
+              resource_class: [windows.medium, windows.large, windows.xlarge]
+              executor_type: [windows19]
+          requires:
+            - check_if_windows_is_enabled  
   
 #  almalinux_resource_class_jobs:
 #    jobs:
