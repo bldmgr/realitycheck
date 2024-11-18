@@ -680,6 +680,7 @@ jobs:
       - run: git clone git@github.com:bldmgr/tagbot.git
       - run: git clone git@github.com:apollo-command-and-service-module/apollo.git
       - run: ls -la
+      - run: sudo -v
 
 workflows:
 #  windows:
@@ -693,22 +694,22 @@ workflows:
 #      - mac-test-02
 #      - mac-test-03
 #      - mac-test-04
-#  dlc_testing:
-#    jobs:
-#      - simple-docker
-#      - build-image-no-cache
-#      - build-no-cache-buildkit
-#      - build-dlc-buildkit
-#      - compose-pull
-#
-#  docker_resource_class_jobs:
-#    jobs:
-#      - executor_resource_class:
-#          matrix:
-#            parameters:
-#              resource_class: [small, medium, medium+, large, xlarge]
-#              executor_type: [docker] # default, but re-defining for clarity
-#
+  dlc_testing:
+    jobs:
+      - simple-docker
+      - build-image-no-cache
+      - build-no-cache-buildkit
+      - build-dlc-buildkit
+      - compose-pull
+
+  docker_resource_class_jobs:
+    jobs:
+      - executor_resource_class:
+          matrix:
+            parameters:
+              resource_class: [small, medium, medium+, large, xlarge]
+              executor_type: [docker] # default, but re-defining for clarity
+
   windows_default_resource_class:
     jobs:
       - check_if_windows_is_enabled
@@ -768,23 +769,23 @@ workflows:
 ##          requires:
 ##            - check_if_environment_is_gcp
 ##
-#  feature_jobs:
-#    jobs:
-#      - save_and_restore_cache
-#      - contexts:
-#          context: org-global
-#      - multi-contexts:
-#          context: individual-local
-#      - write_workspace
-#      - read_workspace:
-#          requires:
-#            - write_workspace
-#      - artifacts_test_results
-#
-#  other_jobs:
-#    jobs:   
-#      - env-subst-example
-#      - nomad-packer-build
-#      - default-tests
-#      - default-buildx
-#      - ssh-test
+  feature_jobs:
+    jobs:
+      - save_and_restore_cache
+      - contexts:
+          context: org-global
+      - multi-contexts:
+          context: individual-local
+      - write_workspace
+      - read_workspace:
+          requires:
+            - write_workspace
+      - artifacts_test_results
+
+  other_jobs:
+    jobs:   
+      - env-subst-example
+      - nomad-packer-build
+      - default-tests
+      - default-buildx
+      - ssh-test
