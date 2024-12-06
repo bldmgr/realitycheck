@@ -736,7 +736,7 @@ workflows:
           matrix:
             parameters:
               resource_class: [memory.small, memory.medium, memory.large, memory.xlarge, compute.small, compute.medium, compute.large, compute.xlarge, compute.2xlarge, general.small, general.medium, general.large, general.xlarge, general.2xlarge, network.small, network.medium, network.xlarge, network.2xlarge, accelerated.small]
-              image_type: [default, cisco-default-current]
+              image_type: [default, ubuntu-2204]
               executor_type: [linux] # default, but re-defining for clarity
   
   linux_images_jobs:
@@ -745,7 +745,7 @@ workflows:
           matrix:
             parameters:
               resource_class: [medium]
-              image_type: [default, cisco-default-original, default-original, default-current, cisco-default-current, cisco-build-dev, ubuntu-latest]
+              image_type: [default, ubuntu-2204, ubuntu-latest, ubuntu-1727879404, cisco-defailt-old, cisco-default, cisco-defailt-old]
               executor_type: [linux] # default, but re-defining for clarity
   vm_jobs:
     jobs:
