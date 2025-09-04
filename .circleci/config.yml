@@ -377,11 +377,9 @@ jobs:
       - image: cimg/base:current
     resource_class: bldmgr/k8s
     steps:
-      - run:
-          <<: *basic_docker_build
+      - checkout
       - run: |
           echo $SLEEP
-          circleci version
           date
           sleep $SLEEP
           date
