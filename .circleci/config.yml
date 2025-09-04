@@ -374,7 +374,7 @@ jobs:
   # vm jobs
   runner:
     machine: true
-    resource_class: bldmgr/lab
+    resource_class: bldmgr/k8s
     steps:
       - run:
           <<: *basic_docker_build
