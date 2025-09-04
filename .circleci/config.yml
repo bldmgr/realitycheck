@@ -373,7 +373,8 @@ jobs:
 
   # vm jobs
   runner:
-    machine: true
+    docker:
+      - image: cimg/base:current
     resource_class: bldmgr/k8s
     steps:
       - run:
